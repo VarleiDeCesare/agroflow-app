@@ -1,5 +1,19 @@
-import { FC } from "react";
+interface Response {
+  token: string;
+  user: {
+    name: string;
+    email: string;
+  };
+}
 
-export const AuthProvider: FC = () => {
-  function signIn(email: string, password: string) {}
-};
+export function signIn(): Promise<Response> {
+  return new Promise((resolve) => {
+    resolve({
+      token: "token aqui",
+      user: {
+        name: "Varlei",
+        email: "varlei.cesare@corebiz.ag",
+      },
+    });
+  });
+}

@@ -1,31 +1,39 @@
-import { FC } from "react";
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import Auhentication from "./src/modules/Authentication";
-import { NativeModules } from "react-native";
-import Home from "./src/modules/Home";
+import React from "react";
+import { AuthProvider } from "./src/contexts/auth";
+import Routes from "./src/routes";
+import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 
-const App: FC = () => {
-  //FIXME: Aqui vai atualizar com o contextAPI
-
-  const user = false;
-
-  const { StatusBarManager } = NativeModules;
-
-  const height = StatusBarManager.HEIGHT;
+export default function App() {
+  const toastConfig = {
+    error: (props: any) => (
+      <ErrorToast
+        {...props}
+        text1Style={{
+          fontSize: 14,
+        }}
+        text2Style={{
+          fontSize: 15,
+        }}
+      />
+    ),
+    success: (props: any) => (
+      <BaseToast
+        {...props}
+        style={{ borderLeftColor: "green" }}
+        text1Style={{
+          fontSize: 14,
+        }}
+        text2Style={{
+          fontSize: 15,
+        }}
+      />
+    ),
+  };
 
   return (
-    <SafeAreaProvider
-      style={{
-        flex: 1,
-        marginTop: height,
-      }}
-    >
-      {user ? <Home /> : <Auhentication />}
-
-      <StatusBar style="auto" />
-    </SafeAreaProvider>
+    <AuthProvider>
+      <Routes />
+      <Toast config={toastConfig} />
+    </AuthProvider>
   );
-};
-
-export default App;
+}
